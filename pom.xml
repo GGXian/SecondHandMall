@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>common</module>
+        <module>product</module>
+        <module>order</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -30,6 +32,7 @@
         <pagehelper.version>1.2.12</pagehelper.version>
         <mybatis-generator.version>1.3.7</mybatis-generator.version>
         <fastjson.version>1.2.68</fastjson.version>
+        <msyql-connector-java.version>8.0.16</msyql-connector-java.version>
     </properties>
 
     <dependencies>
@@ -74,8 +77,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-
-
         <!--Swagger-UI API文档生产工具-->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -86,7 +87,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger2.version}</version>
-
         </dependency>
         <!-- Json处理工具 -->
         <dependency>
@@ -106,15 +106,22 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${msyql-connector-java.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
             <!--集成elasticsearch-->
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-elasticsearch -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
             </dependency>
+
             <!--集成logstash-->
             <dependency>
                 <groupId>net.logstash.logback</groupId>
