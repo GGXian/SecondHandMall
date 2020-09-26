@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.secondhandmall.product.dao.PmsProductCategoryDao">
+  <resultMap id="BaseResultMap" type="com.gdut.secondhandmall.product.model.PmsProductCategoryDO">
+    <id column="id" jdbcType="SMALLINT" property="id" />
+    <result column="primary_directory" jdbcType="VARCHAR" property="primaryDirectory" />
+    <result column="secondary_directory" jdbcType="VARCHAR" property="secondaryDirectory" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from pms_product_category
+    where id = #{id,jdbcType=SMALLINT}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.secondhandmall.product.model.PmsProductCategoryDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Short">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pms_product_category (primary_directory, secondary_directory
+      )
+    values (#{primaryDirectory,jdbcType=VARCHAR}, #{secondaryDirectory,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gdut.secondhandmall.product.model.PmsProductCategoryDO">
+    update pms_product_category
+    set primary_directory = #{primaryDirectory,jdbcType=VARCHAR},
+      secondary_directory = #{secondaryDirectory,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select id, primary_directory, secondary_directory
+    from pms_product_category
+    where id = #{id,jdbcType=SMALLINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, primary_directory, secondary_directory
+    from pms_product_category
+  </select>
+  <select id="getSecondaryDirectoryByPrimaryDirectory" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, primary_directory, secondary_directory
+    from pms_product_category
+    where primary_directory = #{primaryDirectory}
+  </select>
+</mapper>

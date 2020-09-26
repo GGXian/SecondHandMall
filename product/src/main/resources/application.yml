@@ -1,0 +1,77 @@
+mybatis:
+  mapper-locations: classpath:dao/*.xml
+  #type-aliases-package: com.gdut.secondhandmall.product.model
+
+spring:
+  #配置数据源
+  datasource:
+    #公共属性
+    name: productDruid
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/secondhandmall?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #Druid特有属性
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  #配置redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    #password: 123456
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 500
+        min-idle: 0
+    lettuce:
+      shutdown-timeout: 0ms
+  #配置静态资源映射
+  #mvc:
+    #static-path-pattern: /static/image/**
+  #resources:
+    #static-locations: file:/project/
+
+server:
+  port: 8080
+
+elasticsearch:
+  address: localhost
+
+picture:
+  path: D:\shmall-test\picture
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false #pageSize=0
+
+logging:
+  #pattern:
+    #console: '%d{yyyy‐MM‐dd} [%thread] %‐5level %logger{50} ‐ %msg%n'
+    #file: '%d{yyyy‐MM‐dd} === [%thread] === %‐5level === %logger{50} ==== %msg%n'
+  file:
+    name: D:\shmall-test\log\spring.txt
+  level:
+    root: error
+
+
+
+

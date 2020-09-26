@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.secondhandmall.product.dao.OmsOrderReturnApplyDao">
+  <resultMap id="BaseResultMap" type="com.gdut.secondhandmall.product.model.OmsOrderReturnApplyDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="handle_man" jdbcType="BIGINT" property="handleMan" />
+    <result column="handle_note" jdbcType="VARCHAR" property="handleNote" />
+    <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime" />
+  </resultMap>
+  <sql id="BaseSql">
+    id, order_id, product_id, buyer_id, seller_id, create_time, reason, status,
+    handle_man, handle_note, handle_time
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from oms_order_return_apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.secondhandmall.product.model.OmsOrderReturnApplyDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into oms_order_return_apply (order_id, product_id, buyer_id, 
+      seller_id, create_time, reason, 
+      status, handle_man, handle_note, 
+      handle_time)
+    values (#{orderId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{buyerId,jdbcType=VARCHAR}, 
+      #{sellerId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{handleMan,jdbcType=BIGINT}, #{handleNote,jdbcType=VARCHAR}, 
+      #{handleTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gdut.secondhandmall.product.model.OmsOrderReturnApplyDO">
+    update oms_order_return_apply
+    set order_id = #{orderId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      reason = #{reason,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      handle_man = #{handleMan,jdbcType=BIGINT},
+      handle_note = #{handleNote,jdbcType=VARCHAR},
+      handle_time = #{handleTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_return_apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_return_apply
+  </select>
+  <select id="selectByOpenId" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_return_apply where buyer_id = #{openId}
+  </select>
+  <update id="updateDetail" parameterType="com.gdut.secondhandmall.product.dto.VerificationDTOForOrder">
+    update oms_order_return_apply set handle_man = #{adminId}, handle_note = #{feedback},
+    status = ${status}, handle_time = #{handleTime} where order_id = #{orderId}
+  </update>
+  <select id="selectByOrderId" parameterType="long" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_return_apply
+    where order_id = #{orderId}
+  </select>
+</mapper>

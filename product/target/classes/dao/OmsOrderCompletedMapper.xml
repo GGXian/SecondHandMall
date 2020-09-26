@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.secondhandmall.product.dao.OmsOrderCompletedDao">
+  <resultMap id="BaseResultMap" type="com.gdut.secondhandmall.product.model.OmsOrderCompletedDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="pay_type" jdbcType="TINYINT" property="payType" />
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="BaseSql">
+    id, order_id, product_id, total_amount, pay_type, buyer_id, seller_id, time
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from oms_order_completed
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.secondhandmall.product.model.OmsOrderCompletedDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into oms_order_completed (order_id, product_id, total_amount, 
+      pay_type, buyer_id, seller_id, 
+      time)
+    values (#{orderId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, 
+      #{payType,jdbcType=TINYINT}, #{buyerId,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gdut.secondhandmall.product.model.OmsOrderCompletedDO">
+    update oms_order_completed
+    set order_id = #{orderId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      pay_type = #{payType,jdbcType=TINYINT},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_completed
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_completed
+  </select>
+  <select id="getOrderForBuyer" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_completed where buyer_id = ${openId}
+  </select>
+  <select id="getOrderForSeller" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="BaseSql"></include>
+    from oms_order_completed where seller_id = ${openId}
+  </select>
+</mapper>

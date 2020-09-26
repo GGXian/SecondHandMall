@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.secondhandmall.product.dao.PmsProductVertifyRecordDao">
+  <resultMap id="BaseResultMap" type="com.gdut.secondhandmall.product.model.PmsProductVertifyRecordDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="directory_id" jdbcType="SMALLINT" property="directoryId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="vertify_man" jdbcType="BIGINT" property="vertifyMan" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+  </resultMap>
+
+  <sql id="baseSql">
+    openid, product_id, product_name,
+    directory_id, pic_url, description,
+    original_price, price, create_time,
+    vertify_man, status, detail
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pms_product_vertify_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.secondhandmall.product.model.PmsProductVertifyRecordDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pms_product_vertify_record (
+      <include refid="baseSql"></include>
+      )
+    values (#{openid,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{directoryId,jdbcType=SMALLINT}, #{picUrl,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{vertifyMan,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{detail,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gdut.secondhandmall.product.model.PmsProductVertifyRecordDO">
+    update pms_product_vertify_record
+    set openid = #{openid,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      directory_id = #{directoryId,jdbcType=SMALLINT},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      original_price = #{originalPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      vertify_man = #{vertifyMan,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      detail = #{detail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_vertify_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_vertify_record
+  </select>
+  <select id="selectByOpenID" parameterType="String" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_vertify_record where openid = #{openID}
+  </select>
+  <select id="getVerifyRecordDetail" parameterType="long" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_vertify_record where product_id = #{productId}
+  </select>
+  <update id="updateDetail" parameterType="com.gdut.secondhandmall.product.dto.VerificationDTOForProduct">
+    update pms_product_vertify_record set detail = #{feedback}, status = -1
+    where product_id = #{productId}
+  </update>
+  <update id="updateStatus" parameterType="com.gdut.secondhandmall.product.dto.VerificationDTOForProduct">
+    update pms_product_vertify_record set status = 1
+    where product_id = #{productId}
+  </update>
+</mapper>

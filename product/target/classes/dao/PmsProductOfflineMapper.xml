@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdut.secondhandmall.product.dao.PmsProductOfflineDao">
+  <resultMap id="BaseResultMap" type="com.gdut.secondhandmall.product.model.PmsProductOfflineDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="directory_id" jdbcType="SMALLINT" property="directoryId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="visitor" jdbcType="SMALLINT" property="visitor" />
+    <result column="deal_time" jdbcType="TIMESTAMP" property="dealTime" />
+  </resultMap>
+  <sql id="baseSql">
+    openid, product_id, product_name,
+    directory_id, pic_url, description, original_price,
+    price, publish_time, visitor, deal_time
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pms_product_offline
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gdut.secondhandmall.product.model.PmsProductOfflineDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pms_product_offline (
+      <include refid="baseSql"></include>
+      )
+    values (#{openid,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{directoryId,jdbcType=SMALLINT}, #{picUrl,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{originalPrice},
+      #{price,jdbcType=DECIMAL}, #{publishTime,jdbcType=TIMESTAMP}, #{visitor}, #{dealTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.gdut.secondhandmall.product.model.PmsProductOfflineDO">
+    update pms_product_offline
+    set openid = #{openid,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      directory_id = #{directoryId,jdbcType=SMALLINT},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_offline
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_offline
+  </select>
+  <select id="getProductsSoldForUser" parameterType="String" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_offline where openid = #{openId}
+  </select>
+  <select id="selectByProductId" parameterType="long" resultMap="BaseResultMap">
+    select id,
+    <include refid="baseSql"></include>
+    from pms_product_offline where product_id = #{productId}
+  </select>
+</mapper>
